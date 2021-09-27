@@ -1,2 +1,2 @@
 #!/bin/bash
-sort iacta | uniq -d
+sed "h;s/^/>/;p;x" iacta
