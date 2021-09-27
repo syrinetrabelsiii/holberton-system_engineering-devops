@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -name "*.bak" -js f -delete 
+find . -name "*.js" -type f -delete
