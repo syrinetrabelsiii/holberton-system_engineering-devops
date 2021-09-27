@@ -1,2 +1,2 @@
 #!/bin/bash
-echo -e "Best School \c" > \*\\'"Best School"\'\\*$\?\*\*\*\*\*:)
+sed -i 'Best School' -e '$a\' \*\\'"Best School"\'\\*$\?\*\*\*\*\*:
