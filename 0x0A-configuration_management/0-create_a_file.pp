@@ -1,4 +1,5 @@
 #creates a file named holberton in /tmp using Puppet
+
 file { '/tmp/school':
     owner   => 'www-data',
     group   => 'www-data',
