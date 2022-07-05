@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """
 Uses https://jsonplaceholder.typicode.com along with an employee ID to
 return information about the employee's todo list progress
