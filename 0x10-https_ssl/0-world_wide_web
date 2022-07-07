@@ -3,7 +3,7 @@
 # # shellcheck disable=SC2086
 
 get_line() {
-    echo $(dig "$2"."$1" | grep -A1 "ANSWER SECTION:" | tail -n 1)
+    echo $'(dig "$2"."$1" | grep -A1 "ANSWER SECTION:" | tail -n 1)'
 }
 
 show_info(){
