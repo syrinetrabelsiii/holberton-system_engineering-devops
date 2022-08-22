@@ -25,7 +25,7 @@ file_line { 'b':
 }
 
 file { '/var/www/html/index.html':
-  content => 'Holberton School',
+  content => 'Hello World!',
   require => Package['nginx'],
 }
 
@@ -33,4 +33,3 @@ service { 'nginx':
   ensure  => running,
   require => Package['nginx'],
 }
-
