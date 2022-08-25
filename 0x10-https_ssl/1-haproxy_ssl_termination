@@ -27,5 +27,5 @@ frontend Local_Server
 backend My_Web_Servers
     mode http
     balance roundrobin
-        server 3806-web-01 3.87.88.52:80 check
-        server 3801-web-02 34.75.209.132:80 check
+        server 3806-web-01 54.160.248.102:80 check
+        server 3806-web-02 204.236.199.3:80 check
