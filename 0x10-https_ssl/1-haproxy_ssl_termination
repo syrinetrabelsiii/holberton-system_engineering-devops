@@ -1,21 +1,8 @@
-global
-        log /dev/log    local0
-        log /dev/log    local1 notice
-        chroot /var/lib/haproxy
-        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-        stats timeout 30s
-        user haproxy
-        group haproxy
-        daemon
+global        log /dev/log    local0        log /dev/log    local1 notice        chroot /var/lib/haproxy        stats socket /run/haproxy/admin.sock mode 660 level admin
+        stats timeout 30s        user haproxy        group haproxy        daemon        # Default SSL material locations        ca-base /etc/ssl/certs        crt-base /etc/ssl/private        # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
 
- # Default SSL material locations
-        ca-base /etc/ssl/certs
-        crt-base /etc/ssl/private
-
-        # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
-         ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
-         ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
-         ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
 defaults
         log     global
         mode    http
@@ -32,66 +19,13 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-
-frontend http_web
+frontend Local_Server
     bind *:80
-    default_backend rgw
-backend rgw
+    bind *:443 ssl crt /etc/haproxy/certs/www.ghassene.tech.pem
+    mode http
+    default_backend My_Web_Servers
+backend My_Web_Servers
+    mode http
     balance roundrobin
-    server  rgw1 34.74.13.90 check
-    server  rgw2 34.75.209.132 check
-frontend http_web
-    bind *:80
-    default_backend rgw
-backend rgw
-    balance roundrobin
-    server  rgw1 34.74.13.90 check
-    server  rgw2 34.75.209.132 check
-<<EOT
-frontend http_web
-    bind *:80
-    default_backend rgw
-backend rgw
-    balance roundrobin
-    server  rgw1 34.74.13.90 check
-    server  rgw2 34.75.209.132 check
-EOT
-
-
-
-frontend http_web
-    bind *:80
-    default_backend rgw
-backend rgw
-    balance roundrobin
-    server  rgw1 34.74.13.90 check
-    server  rgw2 34.75.209.132 check
-frontend http_web
-    bind *:80
-    default_backend rgw
-backend rgw
-    balance roundrobin
-    server  rgw1 34.74.13.90 check
-    server  rgw2 34.75.209.132 check
-frontend http_web
-    bind *:80
-    default_backend rgw
-backend rgw
-    balance roundrobin
-    server  rgw1 34.74.13.90 check
-    server  rgw2 34.75.209.132 check
-frontend http_web
-    bind *:80
-    default_backend rgw
-backend rgw
-    balance roundrobin
-    server  rgw1 35.196.230.23:80 check
-    server  rgw2 .34.74.227.86:80 check
-listen 3806-lb-01
-        bind *:80
-        mode http
-        balance roundrobin
-        option httpclose
-        option forwardfor
         server 3806-web-01 3.87.88.52:80 check
         server 3801-web-02 34.75.209.132:80 check
